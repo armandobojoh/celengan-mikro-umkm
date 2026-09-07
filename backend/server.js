@@ -25,7 +25,7 @@ const donasiRoutes = require('./routes/donasiRoutes');
 app.use('/donasi', donasiRoutes);
 
 // Fallback route untuk mengarahkan ke index.html
-app.get('*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
