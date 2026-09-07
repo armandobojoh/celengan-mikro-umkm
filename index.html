@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModalRT — Gotong Royong Modal Usaha Warga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- ================= AUTH SCREEN ================= -->
+<div id="screen-auth" class="auth-screen">
+  <div class="auth-brand">
+    <div class="auth-blob" style="width:340px;height:340px; top:-100px; right:-120px;"></div>
+    <div class="auth-blob" style="width:220px;height:220px; bottom:-80px; left:-60px;"></div>
+    <div class="auth-brand-inner">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" stroke="#4C9FE0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 24 L24 10 L42 24"/><path d="M10 22 V40 H38 V22"/><path d="M20 40 V29 H28 V40"/>
+      </svg>
+      <h1>Celengan Mikro UMKM</h1>
+      <p class="tagline">Gotong royong warga: RT/RW mendata, donatur membantu, usaha kecil tumbuh — bukan tunai, tapi modal yang tepat sasaran.</p>
+      <ul class="brand-points">
+        <li><span class="num">1</span> RT/RW mendaftarkan warga yang membutuhkan modal usaha</li>
+        <li><span class="num">2</span> Admin memverifikasi kelayakan sebelum tayang</li>
+        <li><span class="num">3</span> Donatur menyalurkan donasi mikro secara transparan</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth-panel">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Masuk</button>
+        <button class="auth-tab" id="tab-daftar" onclick="switchAuthTab('daftar')">Daftar Akun</button>
+      </div>
+
+      <form id="form-login" class="auth-form" onsubmit="handleLogin(event)">
+        <label>Masuk sebagai
+          <div class="role-picker" id="role-picker-login">
+            <button type="button" class="role-btn active" data-role="admin">Admin</button>
+            <button type="button" class="role-btn" data-role="rtrw">RT/RW</button>
+            <button type="button" class="role-btn" data-role="donatur">Donatur</button>
+          </div>
+        </label>
+        <label>Email
+          <input type="email" id="login-email" placeholder="nama@email.com" value="admin@test.com" required>
+        </label>
+        <label>Kata sandi
+          <input type="password" id="login-password" placeholder="••••••••" value="123456" required>
+        </label>
+        <div class="form-err" id="login-err"></div>
+        <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+        <div class="demo-hint">
+          <strong>Akun demo — coba tiap peran:</strong><br>
+           Admin &nbsp;→ admin@test.com / 123456<br>
+           RT/RW &nbsp;→ rtrw@test.com / 123456<br>
+           Donatur → donatur@test.com / 123456
+        </div>
+        <div class="reset-link">
+           Data disimpan secara permanen di server.
+        </div>
+      </form>
+
+      <form id="form-daftar" class="auth-form" hidden onsubmit="handleDaftar(event)">
+        <label>Daftar sebagai
+          <div class="role-picker" id="role-picker-daftar">
+            <button type="button" class="role-btn active" data-role="rtrw">RT/RW</button>
+            <button type="button" class="role-btn" data-role="donatur">Donatur</button>
+          </div>
+        </label>
+        <label>Nama Lengkap
+          <input type="text" id="daftar-nama" placeholder="cth. Budi Santoso" required>
+        </label>
+        <label>Email
+          <input type="email" id="daftar-email" placeholder="nama@email.com" required>
+        </label>
+        <label>Kata sandi
+          <input type="password" id="daftar-password" placeholder="Minimal 6 karakter" required minlength="6">
+        </label>
+        <div class="form-err" id="daftar-err"></div>
+        <button class="btn btn-primary btn-block" type="submit">Daftar &amp; Masuk</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP SHELL ================= -->
+<div id="screen-app" class="app-shell" hidden>
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <svg viewBox="0 0 48 48" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24 L24 10 L42 24"/><path d="M10 22 V40 H38 V22"/></svg>
+      <span>ModalRT</span>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="user-avatar"></div>
+      <div class="user-meta">
+        <span id="user-name"></span>
+        <span class="user-role-badge" id="user-role"></span>
+      </div>
+      <button class="btn-logout" id="btn-logout" title="Keluar dari akun" aria-label="Keluar dari akun" onclick="handleLogout()">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Keluar</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h2 id="page-title">Dashboard</h2>
+      <div class="topbar-stat" id="topbar-stat"></div>
+    </header>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+
+<!-- Order matters: each file attaches to the shared global scope (no bundler, so plain <script> tags). -->
+<script src="js/storage.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/ui-helpers.js"></script>
+<script src="js/pages/rtrw.js"></script>
+<script src="js/pages/admin.js"></script>
+<script src="js/pages/donatur.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
