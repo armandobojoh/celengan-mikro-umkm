@@ -1,4 +1,4 @@
-const API_BASE = 'https://celengan-mikro-umkm-production.up.railway.app';
+const API_BASE = 'https://celengan-mikro-umkm-production.up.railway.app/api';
 
 async function apiFetch(path, options = {}) {
   const token = localStorage.getItem('modalrt_token');
