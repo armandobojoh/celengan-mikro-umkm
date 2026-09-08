@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 // Melayani file frontend statis (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, './'))); 
+app.use(express.static(path.join(__dirname, '..')));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB terhubung!'))
@@ -26,7 +26,7 @@ app.use('/donasi', donasiRoutes);
 
 // Fallback route untuk mengarahkan ke index.html
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
